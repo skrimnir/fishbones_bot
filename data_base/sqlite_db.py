@@ -12,6 +12,8 @@ def sql_start():
         print('db connected ok')
     db.execute('CREATE TABLE IF NOT EXISTS lessons(img TEXT, name TEXT PRIMARY KEY, description TEXT, price TEXT)')
     db.commit()
+    db.execute("CREATE TABLE IF NOT EXISTS records(name TEXT, client_name TEXT, tel TEXT, time TEXT)")
+    db.commit()
 
 
 async def sql_add_lesson(state):
@@ -32,3 +34,9 @@ async def sql_read2():
 async def sql_delete_command(data):
     cursor.execute('DELETE FROM lessons WHERE name == ?', (data,))
     db.commit()
+
+
+async def sql_enrollment_for_lesson(state):
+    async with state.proxy() as data:
+        cursor.execute('INSERT INTO records VALUES(?, ?, ?, ?)', tuple(data.values()))
+        db.commit()

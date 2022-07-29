@@ -1,3 +1,3 @@
 from handlers import client
 from handlers import admin
-from handlers import all
+from handlers import other

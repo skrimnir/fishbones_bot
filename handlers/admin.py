@@ -8,11 +8,13 @@ from keyboards import kb_admin
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
+
+# создаём класс состояний
 class FSMAdmin(StatesGroup):
     photo = State()
     name = State()
     description = State()
-    prise = State()
+    price = State()
 
 
 # вызвать клавиатуру администратора
@@ -103,7 +105,7 @@ def register_handlers_admin(dp: Dispatcher):
     dp.register_message_handler(load_photo, content_types=['photo'], state=FSMAdmin.photo)
     dp.register_message_handler(load_name, state=FSMAdmin.name)
     dp.register_message_handler(load_description, state=FSMAdmin.description)
-    dp.register_message_handler(load_price, state=FSMAdmin.prise)
+    dp.register_message_handler(load_price, state=FSMAdmin.price)
     dp.register_message_handler(send_to_admin, commands='admin')
-    dp.register_callback_query_handler(del_callback_run, lambda x: x.data and x.data.startswith("del "))  # если состояние начинается с 'del ', то запускается этот hendler
+    dp.register_callback_query_handler(del_callback_run, Text(startswith="del "))  # если состояние начинается с 'del ', то запускается этот hendler
     dp.register_message_handler(delete_lesson, commands='Удалить')

@@ -1,12 +1,15 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+
+
 #Клавиатура клиента
-b_lesson = KeyboardButton('/Список_занятий')
-b_record = KeyboardButton('/Запсаться')
+b_lesson = KeyboardButton('Список занятий')
+b_record = KeyboardButton('Записаться')
+b_cancel_record = KeyboardButton("Отмена записи")
 
 kb_client = ReplyKeyboardMarkup(resize_keyboard=True)
 
-kb_client.add(b_lesson)
+kb_client.add(b_lesson).add(b_record).add(b_cancel_record)
 
 #Клавиатура админа
 b_load = KeyboardButton('/Загрузить')

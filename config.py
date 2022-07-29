@@ -9,6 +9,4 @@ bot = Bot(BOT_TOKEN)
 dp = Dispatcher(bot, storage=storage)
 
 admin_id = 304408643
-administrator_id = 'pass'
-
-
+administrator_id = 304408643
