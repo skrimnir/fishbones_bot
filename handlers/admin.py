@@ -19,20 +19,20 @@ class FSMAdmin(StatesGroup):
 
 # вызвать клавиатуру администратора
 async def send_to_admin(message: types.Message):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         await bot.send_message(message.from_user.id, "Добро пожаловать, администратор", reply_markup=kb_admin)
 
 
 # начало диолога для загрузки нового пункта меню
 async def start_new_lesson(message: types.Message):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         await FSMAdmin.photo.set()
         await message.reply('Загрузи фото')
 
 
 # выход из состояния
 async def cancel_hendler(message: types.Message, state: FSMContext):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         current_state = await state.get_state()
         if current_state is None:
             return
@@ -42,7 +42,7 @@ async def cancel_hendler(message: types.Message, state: FSMContext):
 
 # ловим первый ответ и пишем в словварь
 async def load_photo(message: types.Message, state: FSMContext):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         async with state.proxy() as data:
             data['photo'] = message.photo[0].file_id
         await FSMAdmin.next()
@@ -51,7 +51,7 @@ async def load_photo(message: types.Message, state: FSMContext):
 
 # ловим второй ответ
 async def load_name(message: types.Message, state: FSMContext):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         async with state.proxy() as data:
             data['name'] = message.text
         await FSMAdmin.next()
@@ -60,7 +60,7 @@ async def load_name(message: types.Message, state: FSMContext):
 
 # ловим третий ответ
 async def load_description(message: types.Message, state: FSMContext):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         async with state.proxy() as data:
             data['description'] = message.text
         await FSMAdmin.next()
@@ -69,9 +69,9 @@ async def load_description(message: types.Message, state: FSMContext):
 
 # ловим последний ответ и используем полученные данные
 async def load_price(message: types.Message, state: FSMContext):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         async with state.proxy() as data:
-            data['price'] = float(message.text)
+            data['price'] = int(message.text)
 
         # async with state.proxy() as data:
         #     await message.reply(str(data))
@@ -88,7 +88,7 @@ async def del_callback_run(callback_query: types.CallbackQuery):
 
 # при нажатии на кнопку /Удалить вызывает уроки из дб и добавляет кнопку удалить под каждым
 async def delete_lesson(message: types.Message):
-    if message.from_user.id == admin_id:
+    if str(message.from_user.id) in admin_id:
         read = await sqlite_db.sql_read2()
         for lesson in read:
             await bot.send_photo(message.from_user.id, lesson[0], f'{lesson[1]}\nОписание: {lesson[2]}\nЦена {lesson[3]}')

@@ -85,7 +85,8 @@ async def finish_rec(message: types.Message, state: FSMContext):
     await sqlite_db.sql_enrollment_for_lesson(state)
     d = str(data)
     d = d.replace("FSMContextProxy state = 'FSMAdmin:time', data = {", "").replace("}, closed = True", "")
-    await bot.send_message(administrator_id, text=f'Новая запись на урок: {d}')
+    for i in range(len(administrator_id)):
+        await bot.send_message(administrator_id[i], text=f'Новая запись на урок: {d}')
     await state.finish()
     await message.answer("Вы записались")
 
