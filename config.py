@@ -8,6 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 storage = MemoryStorage()
 
+host = os.getenv('host')
+user = os.getenv("user")
+password = os.getenv("password")
+db_name = os.getenv("db_name")
+
+
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(BOT_TOKEN)
 dp = Dispatcher(bot, storage=storage)

@@ -1,13 +1,13 @@
-from aiogram import executor, types
+from aiogram import executor
 from config import BOT_TOKEN, dp
 from handlers import admin, client, other
-from data_base import sqlite_db
+from data_base import mysql_db
 
 
 
 async def on_startup(_):
     print("bot onlain")
-    sqlite_db.sql_start()
+    mysql_db.mysql_start()
 
 
 client.register_handlers_client(dp)
@@ -19,7 +19,7 @@ executor.start_polling(dp, skip_updates=True, on_startup = on_startup) # skip_up
 
 
 # +  0) убрать токен из конфига и репозитория. Добавить локальный конфиг, в основном оставить None в конфиденциальных переменных (номера админов можно тоже туда вынести)
-# 1) Перевести базу данных на MySQL, который разворачиваем в докер-контейнере
+# +  1) Перевести базу данных на MySQL, который разворачиваем в докер-контейнере
 # 2) Подключить ORM и написать модель - я обычно использую PonyORM или SQLAlchemy
 # 3) Добавить в БД таблицу с ценами и выводить цены в отдельном меню
 # 4) Поправить отправку заявки: оставить только выбор предмета. При отправке проверять открыт ли юзернейм в телеграме, если нет, то спрашивать телефон

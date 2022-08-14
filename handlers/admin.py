@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from config import admin_id, bot
 from aiogram.dispatcher.filters import Text
-from data_base import sqlite_db
+from data_base import mysql_db
 from keyboards import kb_admin
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -71,29 +71,29 @@ async def load_description(message: types.Message, state: FSMContext):
 async def load_price(message: types.Message, state: FSMContext):
     if str(message.from_user.id) in admin_id:
         async with state.proxy() as data:
-            data['price'] = int(message.text)
+            data['price'] = message.text
 
         # async with state.proxy() as data:
         #     await message.reply(str(data))
-        await sqlite_db.sql_add_lesson(state)
+        await mysql_db.mysql_add_lesson(state)
         await state.finish()  # бот выходит из машины состояний и полностью удаляет всё введённую инфу. сохранять всё в бд нужно до жтой строчки!
         await message.answer("записан новый урок")
 
 
 # запуск команды sql_delete_command и отправка админу сообщения о выполненном удалении
 async def del_callback_run(callback_query: types.CallbackQuery):
-    await sqlite_db.sql_delete_command(callback_query.data.replace('del ', ''))
+    await mysql_db.mysql_delete_command(callback_query.data.replace('del ', ''))
     await callback_query.answer(text=f'{callback_query.data.replace("del ", "")} удален.', show_alert=True)
 
 
 # при нажатии на кнопку /Удалить вызывает уроки из дб и добавляет кнопку удалить под каждым
 async def delete_lesson(message: types.Message):
     if str(message.from_user.id) in admin_id:
-        read = await sqlite_db.sql_read2()
+        read = await mysql_db.mysql_read2()
         for lesson in read:
-            await bot.send_photo(message.from_user.id, lesson[0], f'{lesson[1]}\nОписание: {lesson[2]}\nЦена {lesson[3]}')
+            await bot.send_photo(message.from_user.id, lesson['img'], f'{lesson["name"]}\nОписание: {lesson["description"]}\nЦена {lesson["price"]}')
             await bot.send_message(message.from_user.id, text='^^^', reply_markup=InlineKeyboardMarkup().\
-                add(InlineKeyboardButton(f'Удалить {lesson[1]}', callback_data=f'del {lesson[1]}')))
+                add(InlineKeyboardButton(f'Удалить {lesson["name"]}', callback_data=f'del {lesson["name"]}')))
 
 
 # Регистрируем хендлеры

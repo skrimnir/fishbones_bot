@@ -1,5 +1,5 @@
 import sqlite3
-from  config import bot
+from config import bot
 from aiogram import types, Dispatcher
 
 

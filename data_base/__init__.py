@@ -1,1 +1,2 @@
-from data_base import sqlite_db
+from data_base import mysql_db
+from . import mysql_db
