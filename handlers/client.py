@@ -1,4 +1,5 @@
 
+from asyncore import read
 from http import client
 from posixpath import split
 from time import time
@@ -6,7 +7,8 @@ from unicodedata import name
 from aiogram import types, Dispatcher
 from config import bot
 from keyboards import kb_client
-from data_base import mysql_db
+# from data_base import mysql_db
+from data_base import sqlalchemy
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
@@ -29,12 +31,14 @@ async def command_start(message: types.Message):
 
 # показть список уроков из бд
 async def occupations_list(message: types.Message):
-    await mysql_db.mysql_read(message)
+    await sqlalchemy.db_read(message)
+    # await mysql_db.mysql_read(message)
 
 
 # начало диалога для записи на урок
 async def enrollment_for_lesson(message: types.Message, state: FSMContext):
-    read = await mysql_db.mysql_read2()
+    # read = await mysql_db.mysql_read2()
+    read = await sqlalchemy.db_read2()
     for lesson in read:
                 await bot.send_message(message.from_user.id, text=f'Записаться на урок: ', reply_markup=InlineKeyboardMarkup().\
                         add(InlineKeyboardButton(text=f'{lesson["name"]}', callback_data=f'rec {lesson["name"]}')))
@@ -80,7 +84,8 @@ async def tell_time(message: types.Message, state: FSMContext):
 async def finish_rec(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['time'] = message.text
-    await mysql_db.mysql_enrollment_for_lesson(state)
+    # await mysql_db.mysql_enrollment_for_lesson(state)
+    await sqlalchemy.db_enrollment_for_lesson(state)
     d = str(data)
     d = d.replace("FSMContextProxy state = 'FSMAdmin:time', data = {", "").replace("}, closed = True", "")
     for i in range(len(administrator_id)):
