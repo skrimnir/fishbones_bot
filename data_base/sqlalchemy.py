@@ -91,3 +91,20 @@ async def db_read_price_client(message):
 async def db_delete_command_price(data):
     delete_price = prices.delete().where(prices.c.lesson_price == data)
     connect.execute(delete_price)
+
+
+async def db_read_records(message):
+    show_records = records.select()
+    result = connect.execute(show_records)
+    for record in result:
+        await bot.send_message(message.from_user.id, f"урок : {record['name']}\nимя : {record['user_name']}\nтелефон : {record['tel']}\nвремя : {record['time']}")
+# async def db_read_lessons_client(message):
+#     show_lessons = lessons.select()
+#     result = connect.execute(show_lessons)
+#     for lesson in result:
+        #  await bot.send_photo(message.from_user.id, lesson['img'], f'{lesson["name"]}\nОписание : {lesson["description"]}') # \nЦена {lesson["price"]}
+
+#         Column("name", String(40)),
+#         Column("user_name", String(40)),
+#         Column("tel", String(40)),
+#         Column("time", String(40))

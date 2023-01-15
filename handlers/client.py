@@ -8,7 +8,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
-from config import administrator_id
+from config import manager_id
 
 
 # создаём класс состояний
@@ -69,8 +69,8 @@ async def tell_your_name(message: types.Message, state: FSMContext):
     await sqlalchemy.db_enrollment_for_lesson(state)
     d = str(data)
     d = d.replace("FSMContextProxy state = 'FSMRecord:client_name', data = {'name': ", "").replace("datetime.datetime", "").replace("}, closed = True", "")
-    for i in range(len(administrator_id)):
-        await bot.send_message(administrator_id[i], text=f'Новая запись на урок: {d}')
+    for i in range(len(manager_id)):
+        await bot.send_message(manager_id[i], text=f'Новая запись на урок: {d}')
     await state.finish()
     await message.answer("Вы записались")
 

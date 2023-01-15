@@ -22,3 +22,10 @@ b_delete_price = KeyboardButton('/Удалить_цену')
 kb_admin = ReplyKeyboardMarkup(resize_keyboard=True)
 
 kb_admin.add(b_load_lesson).add(b_delete_lesson).add(b_cancel).add(b_load_price).add(b_delete_price)
+
+#Клавиатура манагера
+b_show_records = KeyboardButton('Показать записи')
+
+kb_manager = ReplyKeyboardMarkup(resize_keyboard=True)
+
+kb_manager.add(b_show_records)

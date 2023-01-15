@@ -1,6 +1,6 @@
 from aiogram import executor
 from config import BOT_TOKEN, dp
-from handlers import admin, client, other
+from handlers import admin, manager, client, other
 # from data_base import mysql_db
 from data_base import sqlalchemy
 
@@ -14,6 +14,7 @@ async def on_startup(_):
 
 client.register_handlers_client(dp)
 admin.register_handlers_admin(dp)
+manager.register_handlers_manager(dp)
 other.register_handlers_all(dp)
 
 executor.start_polling(dp, skip_updates=True, on_startup = on_startup) # skip_updates скипает сообщения отправленные пока бот был не активен, функция on_startup выполняется только на старте

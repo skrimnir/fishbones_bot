@@ -26,10 +26,10 @@ class FSMaddprice(StatesGroup):
     season_ticket = State()
 
 
-# вызвать клавиатуру администратора
+# вызвать клавиатуру админа
 async def send_to_admin(message: types.Message):
     if str(message.from_user.id) in admin_id:
-        await bot.send_message(message.from_user.id, "Добро пожаловать, администратор", reply_markup=kb_admin)
+        await bot.send_message(message.from_user.id, "Добро пожаловать, админ", reply_markup=kb_admin)
 
 
 # начало диолога для загрузки нового урока
